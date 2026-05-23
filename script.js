@@ -84,6 +84,70 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
+// ===== VIDEO MODAL FUNCTIONALITY =====
+const videoModal = document.getElementById('videoModal');
+const videoModalContainer = document.getElementById('videoModalContainer');
+const videoPlayer = document.getElementById('videoPlayer');
+const videoExternalLink = document.getElementById('videoExternalLink');
+const videoModalClose = document.getElementById('videoModalClose');
+const videoModalOverlay = document.getElementById('videoModalOverlay');
+
+document.querySelectorAll('.video-item').forEach(item => {
+  const link = item.querySelector('a');
+  if (link) {
+    link.addEventListener('click', e => {
+      e.preventDefault(); // Stop standard link navigation
+      
+      const videoId = item.getAttribute('data-video-id');
+      const videoType = item.getAttribute('data-video-type');
+      let embedUrl = '';
+      let externalUrl = '';
+
+      if (videoType === 'youtube') {
+        videoModalContainer.classList.remove('vertical-aspect');
+        embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+        externalUrl = `https://youtu.be/${videoId}`;
+        if (videoExternalLink) {
+          videoExternalLink.href = externalUrl;
+          videoExternalLink.innerHTML = 'Watch on YouTube <span style="font-size: 0.75rem;">↗</span>';
+        }
+      } else if (videoType === 'instagram') {
+        videoModalContainer.classList.add('vertical-aspect');
+        embedUrl = `https://www.instagram.com/reel/${videoId}/embed/`;
+        externalUrl = `https://www.instagram.com/reel/${videoId}/`;
+        if (videoExternalLink) {
+          videoExternalLink.href = externalUrl;
+          videoExternalLink.innerHTML = 'Watch on Instagram <span style="font-size: 0.75rem;">↗</span>';
+        }
+      }
+
+      videoPlayer.src = embedUrl;
+      videoModal.classList.add('active');
+      videoModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden'; // Disable page scrolling
+    });
+  }
+});
+
+const closeVideoModal = () => {
+  if (videoModal) {
+    videoModal.classList.remove('active');
+    videoModal.setAttribute('aria-hidden', 'true');
+  }
+  if (videoPlayer) videoPlayer.src = '';
+  document.body.style.overflow = ''; // Re-enable page scrolling
+};
+
+if (videoModalClose) videoModalClose.addEventListener('click', closeVideoModal);
+if (videoModalOverlay) videoModalOverlay.addEventListener('click', closeVideoModal);
+
+// Close modal on Escape key press
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && videoModal && videoModal.classList.contains('active')) {
+    closeVideoModal();
+  }
+});
+
 // ===== CONTACT FORM =====
 document.getElementById('contactForm').addEventListener('submit', e => {
   e.preventDefault();

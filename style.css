@@ -801,7 +801,7 @@ img, svg { display: block; max-width: 100%; }
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 40px;
   position: relative;
   z-index: 1;
@@ -1254,4 +1254,124 @@ img, svg { display: block; max-width: 100%; }
   .why-grid { grid-template-columns: 1fr; }
   .team-grid { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ===== VIDEO MODAL & PLAY BUTTON OVERLAY ===== */
+.video-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.video-modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.video-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+}
+
+.video-modal-container {
+  position: relative;
+  width: 90%;
+  max-width: 900px;
+  background: #000;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+  z-index: 1;
+}
+
+.video-modal.active .video-modal-container {
+  transform: scale(1);
+}
+
+.video-modal-container.vertical-aspect {
+  max-width: 400px;
+}
+
+.video-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2.5rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 10;
+  transition: color 0.2s ease;
+}
+
+.video-modal-close:hover {
+  color: var(--aqua-light);
+}
+
+.video-modal-body {
+  padding: 0;
+}
+
+.video-ratio-wrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  height: 0;
+}
+
+.video-modal-container.vertical-aspect .video-ratio-wrapper {
+  padding-bottom: 177.77%; /* 9:16 Aspect Ratio */
+}
+
+.video-ratio-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Play Button Overlay Hover Effect */
+.play-btn-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 2;
+  transition: background 0.3s ease;
+}
+
+.portfolio-item:hover .play-btn-overlay {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.play-icon {
+  opacity: 0.85;
+  transform: scale(1);
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.portfolio-item:hover .play-icon {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+/* Adjust portfolio cursor for playable items */
+.video-item {
+  cursor: pointer;
 }
